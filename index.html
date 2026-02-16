@@ -2,126 +2,121 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🀄 麻将计分器 - 新年快乐</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🀄 麻将计分器</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(180deg, #d4201e 0%, #a01010 100%);
             min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
+            padding: 12px;
+            padding-bottom: 80px;
         }
         
         .header {
             text-align: center;
             color: #ffd700;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
+            padding: 10px 0;
         }
         
         .header h1 {
-            font-size: 2.5em;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
-            margin-bottom: 10px;
+            font-size: 1.6em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
         .header p {
-            font-size: 1.2em;
+            font-size: 0.95em;
             opacity: 0.9;
+            margin-top: 5px;
         }
         
         .card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: #fff;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
         
         .card-title {
-            font-size: 1.3em;
-            color: #c41e3a;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .players-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        .player-input {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        
-        .player-input label {
-            font-size: 0.9em;
-            color: #666;
-        }
-        
-        .player-input input {
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
             font-size: 1.1em;
-            transition: border-color 0.3s;
+            color: #d4201e;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
         
-        .player-input input:focus {
+        /* 玩家设置 - 横向排列 */
+        .players-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .player-item {
+            flex: 1;
+            min-width: 70px;
+        }
+        
+        .player-item label {
+            display: block;
+            font-size: 0.75em;
+            color: #888;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+        
+        .player-item input {
+            width: 100%;
+            padding: 10px 8px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1em;
+            text-align: center;
+        }
+        
+        .player-item input:focus {
             outline: none;
-            border-color: #c41e3a;
+            border-color: #d4201e;
         }
         
+        /* 分数卡片 - 2x2 网格 */
         .scores-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
         
         .score-card {
-            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+            background: #fff5f5;
             border: 2px solid #ffd700;
-            border-radius: 15px;
-            padding: 15px 10px;
+            border-radius: 14px;
+            padding: 14px 10px;
             text-align: center;
-            transition: transform 0.3s;
         }
         
-        .score-card:hover {
-            transform: translateY(-5px);
+        .score-card.win {
+            background: linear-gradient(180deg, #e8f5e9 0%, #fff 100%);
+            border-color: #4caf50;
         }
         
-        .score-card.positive {
-            background: linear-gradient(135deg, #d4edda 0%, #fff 100%);
-            border-color: #28a745;
-        }
-        
-        .score-card.negative {
-            background: linear-gradient(135deg, #f8d7da 0%, #fff 100%);
-            border-color: #dc3545;
+        .score-card.lose {
+            background: linear-gradient(180deg, #ffebee 0%, #fff 100%);
+            border-color: #f44336;
         }
         
         .score-name {
-            font-size: 1em;
-            font-weight: bold;
+            font-size: 0.95em;
+            font-weight: 600;
             color: #333;
-            margin-bottom: 10px;
-            word-break: break-all;
+            margin-bottom: 6px;
         }
         
         .score-value {
@@ -129,562 +124,553 @@
             font-weight: bold;
         }
         
-        .score-value.positive {
-            color: #28a745;
-        }
+        .score-value.positive { color: #4caf50; }
+        .score-value.negative { color: #f44336; }
+        .score-value.zero { color: #999; }
         
-        .score-value.negative {
-            color: #dc3545;
-        }
-        
-        .score-value.zero {
-            color: #666;
-        }
-        
-        .round-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .form-group {
+        /* 统计 */
+        .stats-row {
             display: flex;
-            flex-direction: column;
-            gap: 5px;
+            gap: 10px;
+            margin-top: 12px;
         }
         
-        .form-group.full {
-            grid-column: 1 / -1;
+        .stat-box {
+            flex: 1;
+            background: #f8f8f8;
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
         }
         
-        .form-group label {
-            font-size: 0.9em;
+        .stat-num {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #d4201e;
+        }
+        
+        .stat-label {
+            font-size: 0.75em;
+            color: #888;
+            margin-top: 3px;
+        }
+        
+        /* 记分表单 */
+        .form-section {
+            margin-bottom: 15px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .form-col label {
+            display: block;
+            font-size: 0.8em;
             color: #666;
+            margin-bottom: 5px;
         }
         
-        .form-group select, .form-group input {
-            padding: 12px 15px;
-            border: 2px solid #ddd;
+        .form-col select,
+        .form-col input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
             border-radius: 10px;
             font-size: 1em;
+            background: #fff;
         }
         
-        .form-group select:focus, .form-group input:focus {
+        .form-col select:focus,
+        .form-col input:focus {
             outline: none;
-            border-color: #c41e3a;
+            border-color: #d4201e;
         }
         
-        .btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: bold;
+        /* 赢法选择按钮 */
+        .win-type-btns {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .win-type-btn {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            background: #f8f8f8;
+            font-size: 1em;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
+        }
+        
+        .win-type-btn.active {
+            border-color: #d4201e;
+            background: #fff5f5;
+            color: #d4201e;
+            font-weight: 600;
+        }
+        
+        .win-type-desc {
+            font-size: 0.75em;
+            color: #888;
+            margin-top: 4px;
+        }
+        
+        /* 按钮 */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+            background: linear-gradient(135deg, #d4201e 0%, #a01010 100%);
             color: white;
-            width: 100%;
         }
         
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(196, 30, 58, 0.4);
+        .btn-primary:active {
+            transform: scale(0.98);
         }
         
         .btn-secondary {
             background: #f0f0f0;
-            color: #333;
-            margin-top: 10px;
+            color: #666;
+            margin-top: 8px;
+            padding: 12px;
+            font-size: 0.95em;
         }
         
-        .btn-secondary:hover {
-            background: #e0e0e0;
-        }
-        
-        .history {
-            max-height: 300px;
+        /* 历史记录 */
+        .history-list {
+            max-height: 250px;
             overflow-y: auto;
         }
         
         .history-item {
+            background: #f8f8f8;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .history-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 15px;
-            background: #f8f9fa;
+            margin-bottom: 6px;
+        }
+        
+        .history-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+        }
+        
+        .history-type {
+            font-size: 0.75em;
+            padding: 3px 8px;
             border-radius: 10px;
-            margin-bottom: 10px;
-        }
-        
-        .history-info {
-            flex: 1;
-        }
-        
-        .history-round {
-            font-weight: bold;
+            background: #ffd700;
             color: #333;
         }
         
-        .history-detail {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 3px;
+        .history-type.dianpao {
+            background: #90caf9;
         }
         
-        .history-time {
+        .history-detail {
+            font-size: 0.85em;
+            color: #666;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .history-detail span {
+            background: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .history-detail span.pos { color: #4caf50; }
+        .history-detail span.neg { color: #f44336; }
+        
+        .history-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
             font-size: 0.8em;
             color: #999;
         }
         
         .history-delete {
-            background: #dc3545;
+            background: #f44336;
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 8px 12px;
-            cursor: pointer;
-            font-size: 0.9em;
-            margin-left: 10px;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
         }
         
-        .history-delete:hover {
-            background: #c82333;
-        }
-        
-        .empty-state {
+        .empty {
             text-align: center;
             padding: 30px;
-            color: #999;
+            color: #aaa;
         }
         
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .stat-item {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #c41e3a;
-        }
-        
-        .stat-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
-        }
-        
-        .footer {
-            text-align: center;
-            color: rgba(255, 215, 0, 0.7);
-            padding: 20px;
-            font-size: 0.9em;
-        }
-        
-        /* 装饰灯笼 */
-        .lantern {
+        /* 底部固定 */
+        .footer-fixed {
             position: fixed;
-            top: 10px;
-            font-size: 3em;
-            animation: swing 3s ease-in-out infinite;
-            opacity: 0.8;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, transparent, #a01010 20%);
+            padding: 15px;
+            padding-bottom: 25px;
         }
         
-        .lantern-left {
-            left: 20px;
+        .footer-content {
+            text-align: center;
+            color: rgba(255,215,0,0.8);
+            font-size: 0.8em;
         }
         
-        .lantern-right {
-            right: 20px;
-            animation-delay: 0.5s;
-        }
-        
-        @keyframes swing {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-        }
-        
-        @media (max-width: 500px) {
-            .header h1 {
-                font-size: 1.8em;
-            }
-            
-            .scores-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .score-value {
-                font-size: 1.4em;
-            }
-            
-            .lantern {
-                display: none;
+        @media (min-width: 500px) {
+            body {
+                max-width: 450px;
+                margin: 0 auto;
             }
         }
     </style>
 </head>
 <body>
-    <div class="lantern lantern-left">🏮</div>
-    <div class="lantern lantern-right">🏮</div>
+    <div class="header">
+        <h1>🀄 麻将计分器</h1>
+        <p>🧧 新年快乐，恭喜发财 🧧</p>
+    </div>
     
-    <div class="container">
-        <div class="header">
-            <h1>🀄 麻将计分器</h1>
-            <p>🧧 新年快乐，恭喜发财 🧧</p>
-        </div>
-        
-        <!-- 玩家设置 -->
-        <div class="card">
-            <div class="card-title">👥 玩家设置</div>
-            <div class="players-grid">
-                <div class="player-input">
-                    <label>东家 (位置1)</label>
-                    <input type="text" id="player1" placeholder="输入名字" value="东">
-                </div>
-                <div class="player-input">
-                    <label>南家 (位置2)</label>
-                    <input type="text" id="player2" placeholder="输入名字" value="南">
-                </div>
-                <div class="player-input">
-                    <label>西家 (位置3)</label>
-                    <input type="text" id="player3" placeholder="输入名字" value="西">
-                </div>
-                <div class="player-input">
-                    <label>北家 (位置4)</label>
-                    <input type="text" id="player4" placeholder="输入名字" value="北">
-                </div>
+    <!-- 玩家设置 -->
+    <div class="card">
+        <div class="card-title">👥 玩家</div>
+        <div class="players-row">
+            <div class="player-item">
+                <label>东</label>
+                <input type="text" id="p0" value="东">
+            </div>
+            <div class="player-item">
+                <label>南</label>
+                <input type="text" id="p1" value="南">
+            </div>
+            <div class="player-item">
+                <label>西</label>
+                <input type="text" id="p2" value="西">
+            </div>
+            <div class="player-item">
+                <label>北</label>
+                <input type="text" id="p3" value="北">
             </div>
         </div>
-        
-        <!-- 当前分数 -->
-        <div class="card">
-            <div class="card-title">📊 当前分数</div>
-            <div class="scores-grid" id="scoresGrid">
-                <!-- 动态生成 -->
+    </div>
+    
+    <!-- 当前分数 -->
+    <div class="card">
+        <div class="card-title">📊 当前分数</div>
+        <div class="scores-grid" id="scoresGrid"></div>
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-num" id="totalRounds">0</div>
+                <div class="stat-label">总局数</div>
             </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-value" id="totalRounds">0</div>
-                    <div class="stat-label">总局数</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="totalMoney">¥0</div>
-                    <div class="stat-label">总流水</div>
-                </div>
+            <div class="stat-box">
+                <div class="stat-num" id="totalFlow">¥0</div>
+                <div class="stat-label">总流水</div>
             </div>
         </div>
+    </div>
+    
+    <!-- 记录一局 -->
+    <div class="card">
+        <div class="card-title">✍️ 记录本局</div>
         
-        <!-- 记录一局 -->
-        <div class="card">
-            <div class="card-title">✍️ 记录本局</div>
-            <div class="round-form">
-                <div class="form-group">
+        <div class="win-type-btns">
+            <button class="win-type-btn active" id="btnZimo" onclick="setWinType('zimo')">
+                🎯 自摸
+                <div class="win-type-desc">收三家</div>
+            </button>
+            <button class="win-type-btn" id="btnDianpao" onclick="setWinType('dianpao')">
+                💥 点炮
+                <div class="win-type-desc">点炮者付</div>
+            </button>
+        </div>
+        
+        <div class="form-section">
+            <div class="form-row">
+                <div class="form-col">
                     <label>赢家</label>
-                    <select id="winner">
-                        <option value="0">选择赢家</option>
-                        <option value="1">东家</option>
-                        <option value="2">南家</option>
-                        <option value="3">西家</option>
-                        <option value="4">北家</option>
-                    </select>
+                    <select id="winner"></select>
                 </div>
-                <div class="form-group">
-                    <label>番数/金额</label>
-                    <input type="number" id="amount" placeholder="输入金额" step="10">
-                </div>
-                <div class="form-group full">
-                    <label>备注（可选）</label>
-                    <input type="text" id="note" placeholder="如：自摸、杠上开花">
+                <div class="form-col" id="dianpaoCol" style="display:none;">
+                    <label>点炮者</label>
+                    <select id="dianpao"></select>
                 </div>
             </div>
-            <button class="btn btn-primary" onclick="addRound()">✅ 记录本局</button>
-        </div>
-        
-        <!-- 历史记录 -->
-        <div class="card">
-            <div class="card-title">📜 历史记录</div>
-            <div class="history" id="historyList">
-                <div class="empty-state">暂无记录，开始第一局吧！</div>
+            <div class="form-row">
+                <div class="form-col">
+                    <label>金额（每家/份）</label>
+                    <input type="number" id="amount" placeholder="输入金额" inputmode="numeric">
+                </div>
             </div>
-            <button class="btn btn-secondary" onclick="clearAll()" style="width: 100%;">🗑️ 清空所有记录</button>
         </div>
         
-        <div class="footer">
-            🀄 麻将计分器 | 祝您新年大吉，把把自摸！
+        <button class="btn btn-primary" onclick="addRound()">✅ 记录本局</button>
+    </div>
+    
+    <!-- 历史记录 -->
+    <div class="card">
+        <div class="card-title">📜 历史记录</div>
+        <div class="history-list" id="historyList">
+            <div class="empty">暂无记录</div>
         </div>
+        <button class="btn btn-secondary" onclick="clearAll()">🗑️ 清空所有</button>
+    </div>
+    
+    <div class="footer-fixed">
+        <div class="footer-content">🀄 祝您把把自摸，杠上开花！</div>
     </div>
 
     <script>
-        // 数据存储
         let players = ['东', '南', '西', '北'];
         let scores = [0, 0, 0, 0];
         let history = [];
         let roundCount = 0;
+        let winType = 'zimo'; // zimo 或 dianpao
         
-        // 初始化
         function init() {
-            loadFromStorage();
-            updatePlayerInputs();
-            updateScores();
-            updateHistory();
+            load();
+            updatePlayerSelects();
+            render();
         }
         
-        // 从本地存储加载
-        function loadFromStorage() {
-            const saved = localStorage.getItem('mahjongData');
-            if (saved) {
-                const data = JSON.parse(saved);
-                players = data.players || ['东', '南', '西', '北'];
-                scores = data.scores || [0, 0, 0, 0];
-                history = data.history || [];
-                roundCount = data.roundCount || 0;
+        function load() {
+            const data = localStorage.getItem('mj_score');
+            if (data) {
+                const d = JSON.parse(data);
+                players = d.players || players;
+                scores = d.scores || scores;
+                history = d.history || [];
+                roundCount = d.roundCount || 0;
+            }
+            for (let i = 0; i < 4; i++) {
+                document.getElementById('p' + i).value = players[i];
             }
         }
         
-        // 保存到本地存储
-        function saveToStorage() {
-            const data = {
-                players: players,
-                scores: scores,
-                history: history,
-                roundCount: roundCount
-            };
-            localStorage.setItem('mahjongData', JSON.stringify(data));
+        function save() {
+            localStorage.setItem('mj_score', JSON.stringify({
+                players, scores, history, roundCount
+            }));
         }
         
-        // 更新玩家输入框
-        function updatePlayerInputs() {
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById('player' + i).value = players[i-1];
+        function getNames() {
+            for (let i = 0; i < 4; i++) {
+                players[i] = document.getElementById('p' + i).value.trim() || ['东','南','西','北'][i];
             }
         }
         
-        // 获取玩家名字
-        function getPlayerNames() {
-            for (let i = 1; i <= 4; i++) {
-                players[i-1] = document.getElementById('player' + i).value || `玩家${i}`;
-            }
-        }
-        
-        // 更新分数显示
-        function updateScores() {
-            getPlayerNames();
-            const grid = document.getElementById('scoresGrid');
-            grid.innerHTML = '';
+        function updatePlayerSelects() {
+            const winnerSel = document.getElementById('winner');
+            const dianpaoSel = document.getElementById('dianpao');
             
-            let totalAbs = 0;
+            winnerSel.innerHTML = '<option value="">选赢家</option>';
+            dianpaoSel.innerHTML = '<option value="">选点炮者</option>';
             
             for (let i = 0; i < 4; i++) {
-                const score = scores[i];
-                totalAbs += Math.abs(score);
+                winnerSel.innerHTML += `<option value="${i}">${players[i]}</option>`;
+                dianpaoSel.innerHTML += `<option value="${i}">${players[i]}</option>`;
+            }
+        }
+        
+        function setWinType(type) {
+            winType = type;
+            document.getElementById('btnZimo').classList.toggle('active', type === 'zimo');
+            document.getElementById('btnDianpao').classList.toggle('active', type === 'dianpao');
+            document.getElementById('dianpaoCol').style.display = type === 'dianpao' ? 'block' : 'none';
+        }
+        
+        function render() {
+            // 分数卡片
+            const grid = document.getElementById('scoresGrid');
+            let totalFlow = 0;
+            grid.innerHTML = '';
+            
+            for (let i = 0; i < 4; i++) {
+                const s = scores[i];
+                totalFlow += Math.abs(s);
                 
-                let cardClass = 'score-card';
-                let valueClass = 'score-value ';
-                
-                if (score > 0) {
-                    cardClass += ' positive';
-                    valueClass += 'positive';
-                } else if (score < 0) {
-                    cardClass += ' negative';
-                    valueClass += 'negative';
-                } else {
-                    valueClass += 'zero';
-                }
+                let cls = '';
+                let vcls = 'zero';
+                if (s > 0) { cls = 'win'; vcls = 'positive'; }
+                else if (s < 0) { cls = 'lose'; vcls = 'negative'; }
                 
                 grid.innerHTML += `
-                    <div class="${cardClass}">
+                    <div class="score-card ${cls}">
                         <div class="score-name">${players[i]}</div>
-                        <div class="${valueClass}">${score >= 0 ? '+' : ''}${score}</div>
+                        <div class="score-value ${vcls}">${s >= 0 ? '+' : ''}${s}</div>
                     </div>
                 `;
             }
             
             document.getElementById('totalRounds').textContent = roundCount;
-            document.getElementById('totalMoney').textContent = '¥' + totalAbs;
+            document.getElementById('totalFlow').textContent = '¥' + totalFlow;
+            
+            // 历史记录
+            const list = document.getElementById('historyList');
+            if (history.length === 0) {
+                list.innerHTML = '<div class="empty">暂无记录</div>';
+            } else {
+                list.innerHTML = history.map((h, idx) => `
+                    <div class="history-item">
+                        <div class="history-header">
+                            <span class="history-title">第${h.round}局 · ${h.winnerName} 赢</span>
+                            <span class="history-type ${h.type === 'dianpao' ? 'dianpao' : ''}">${h.type === 'zimo' ? '自摸' : '点炮'}</span>
+                        </div>
+                        <div class="history-detail">
+                            ${h.changes.map((c, i) => 
+                                `<span class="${c >= 0 ? 'pos' : 'neg'}">${players[i]}: ${c >= 0 ? '+' : ''}${c}</span>`
+                            ).join('')}
+                        </div>
+                        <div class="history-footer">
+                            <span>${h.time}</span>
+                            <button class="history-delete" onclick="delRound(${idx})">撤销</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            updatePlayerSelects();
         }
         
-        // 添加一局
         function addRound() {
-            const winnerIndex = parseInt(document.getElementById('winner').value);
+            const winnerIdx = parseInt(document.getElementById('winner').value);
             const amount = parseInt(document.getElementById('amount').value);
-            const note = document.getElementById('note').value;
+            const dianpaoIdx = parseInt(document.getElementById('dianpao').value);
             
-            if (winnerIndex === 0) {
-                alert('请选择赢家！');
+            if (isNaN(winnerIdx)) {
+                alert('请选择赢家');
                 return;
             }
-            
             if (!amount || amount <= 0) {
-                alert('请输入有效的金额！');
+                alert('请输入有效金额');
+                return;
+            }
+            if (winType === 'dianpao' && isNaN(dianpaoIdx)) {
+                alert('请选择点炮者');
+                return;
+            }
+            if (winType === 'dianpao' && winnerIdx === dianpaoIdx) {
+                alert('赢家和点炮者不能是同一人');
                 return;
             }
             
-            getPlayerNames();
+            getNames();
             
-            // 计算分数变化
-            // 假设赢家收其他三家，每家付 amount
-            const winner = winnerIndex - 1;
             const changes = [0, 0, 0, 0];
             
-            for (let i = 0; i < 4; i++) {
-                if (i === winner) {
-                    changes[i] = amount * 3; // 收三家
-                    scores[i] += amount * 3;
-                } else {
-                    changes[i] = -amount; // 付一家
-                    scores[i] -= amount;
+            if (winType === 'zimo') {
+                // 自摸：赢家+3倍，其他三家各-1倍
+                for (let i = 0; i < 4; i++) {
+                    if (i === winnerIdx) {
+                        changes[i] = amount * 3;
+                        scores[i] += amount * 3;
+                    } else {
+                        changes[i] = -amount;
+                        scores[i] -= amount;
+                    }
                 }
+            } else {
+                // 点炮：赢家+1倍，点炮者-1倍
+                changes[winnerIdx] = amount;
+                scores[winnerIdx] += amount;
+                changes[dianpaoIdx] = -amount;
+                scores[dianpaoIdx] -= amount;
             }
             
             roundCount++;
             
-            // 记录历史
-            const record = {
+            history.unshift({
                 round: roundCount,
-                winner: winner,
-                winnerName: players[winner],
+                type: winType,
+                winner: winnerIdx,
+                winnerName: players[winnerIdx],
+                dianpao: winType === 'dianpao' ? dianpaoIdx : null,
+                dianpaoName: winType === 'dianpao' ? players[dianpaoIdx] : null,
                 amount: amount,
                 changes: changes,
-                note: note,
-                time: new Date().toLocaleTimeString()
-            };
-            history.unshift(record);
+                time: new Date().toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'})
+            });
             
-            saveToStorage();
-            updateScores();
-            updateHistory();
+            save();
+            render();
             
             // 清空输入
-            document.getElementById('winner').value = '0';
+            document.getElementById('winner').value = '';
+            document.getElementById('dianpao').value = '';
             document.getElementById('amount').value = '';
-            document.getElementById('note').value = '';
-            
-            // 庆祝动画
-            showCelebration();
         }
         
-        // 更新历史记录
-        function updateHistory() {
-            const list = document.getElementById('historyList');
+        function delRound(idx) {
+            if (!confirm('确定撤销这局？')) return;
             
-            if (history.length === 0) {
-                list.innerHTML = '<div class="empty-state">暂无记录，开始第一局吧！</div>';
-                return;
-            }
-            
-            list.innerHTML = '';
-            
-            history.forEach((record, index) => {
-                let detail = record.changes.map((c, i) => {
-                    return `${players[i]}: ${c >= 0 ? '+' : ''}${c}`;
-                }).join(' | ');
-                
-                list.innerHTML += `
-                    <div class="history-item">
-                        <div class="history-info">
-                            <div class="history-round">第${record.round}局 - ${record.winnerName} 赢 (+${record.amount * 3})</div>
-                            <div class="history-detail">${detail}</div>
-                            ${record.note ? `<div class="history-detail">📝 ${record.note}</div>` : ''}
-                            <div class="history-time">${record.time}</div>
-                        </div>
-                        <button class="history-delete" onclick="deleteRound(${index})">撤销</button>
-                    </div>
-                `;
-            });
-        }
-        
-        // 删除一局
-        function deleteRound(index) {
-            if (!confirm('确定要撤销这局吗？')) return;
-            
-            const record = history[index];
-            
-            // 恢复分数
+            const h = history[idx];
             for (let i = 0; i < 4; i++) {
-                scores[i] -= record.changes[i];
+                scores[i] -= h.changes[i];
             }
-            
-            history.splice(index, 1);
+            history.splice(idx, 1);
             roundCount--;
             
-            saveToStorage();
-            updateScores();
-            updateHistory();
+            save();
+            render();
         }
         
-        // 清空所有
         function clearAll() {
-            if (!confirm('确定要清空所有记录吗？此操作不可恢复！')) return;
+            if (!confirm('确定清空所有记录？')) return;
             
             players = ['东', '南', '西', '北'];
             scores = [0, 0, 0, 0];
             history = [];
             roundCount = 0;
             
-            localStorage.removeItem('mahjongData');
-            
-            updatePlayerInputs();
-            updateScores();
-            updateHistory();
-        }
-        
-        // 庆祝动画
-        function showCelebration() {
-            // 简单的庆祝效果
-            const celebration = document.createElement('div');
-            celebration.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                font-size: 4em;
-                z-index: 1000;
-                animation: pop 0.5s ease-out forwards;
-            `;
-            celebration.textContent = '🎉';
-            document.body.appendChild(celebration);
-            
-            setTimeout(() => {
-                celebration.remove();
-            }, 500);
-        }
-        
-        // 添加动画样式
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes pop {
-                0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-                50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
-                100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+            for (let i = 0; i < 4; i++) {
+                document.getElementById('p' + i).value = players[i];
             }
-        `;
-        document.head.appendChild(style);
+            
+            localStorage.removeItem('mj_score');
+            render();
+        }
         
-        // 监听玩家名字变化
-        for (let i = 1; i <= 4; i++) {
-            document.getElementById('player' + i).addEventListener('input', function() {
-                getPlayerNames();
-                saveToStorage();
-                updateScores();
-                updateHistory();
+        // 监听名字变化
+        for (let i = 0; i < 4; i++) {
+            document.getElementById('p' + i).addEventListener('input', () => {
+                getNames();
+                save();
+                render();
             });
         }
         
-        // 初始化
         init();
     </script>
 </body>
